@@ -5,6 +5,7 @@ interface GameScene {
 	scene: THREE.Scene,
 	camera: THREE.Camera,
 	onClick: (state: GameState, callback: (planet?: Planet) => void) => void,
+	onShow: () => void,
 	update: (state: GameState) => void
 }
 

@@ -34,6 +34,10 @@ export default class SystemScene implements GameScene{
 		this.planets = planets
 	}
 
+	public onShow() {
+		this.planets.forEach(planet => this.scene.add(planet.object))
+	}
+
 	public onClick(state: GameState, callback: (planet: Planet) => void) {
 		const mouseRaycaster = new THREE.Raycaster();
 		mouseRaycaster.setFromCamera(state.mousePos, this.camera)

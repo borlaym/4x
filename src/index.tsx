@@ -40,6 +40,8 @@ document.addEventListener('click', () => {
 		} else {
 			state.activeScene = systemScene
 		}
+
+		state.activeScene.onShow()
 	})
 });
 

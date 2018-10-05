@@ -22,6 +22,10 @@ export default class PlanetScene implements GameScene {
 		this.planet = planet
 	}
 
+	public onShow() {
+		return false
+	}
+
 	public onClick(state: GameState, callback: (planet?: Planet) => void) {
 		callback()
 	}
