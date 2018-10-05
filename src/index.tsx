@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { uniq } from 'lodash'
 import createStarBackground from 'createStarBackground';
 import createPlanets from 'createPlanets';
+import rotateAroundPoint from 'rotateAroundPoint';
+import { Vector3 } from 'three';
 
 const scene = new THREE.Scene();
 
@@ -52,8 +54,10 @@ document.addEventListener("mousemove", onMouseMove, false);
 
 
 const SPEED = 5
+const center = new Vector3()
+const rotationAxis = new Vector3(0, 1, 0)
 
-function animate() {
+function update() {
 	const motion = new THREE.Vector3(0, 0, 0);
 	if (state.keysDown.indexOf('w') > -1) {
 		motion.z -= SPEED;
@@ -73,10 +77,18 @@ function animate() {
 
 	camera.position.add(motion)
 
+	// rotate around the sun and axis
+	planets.forEach(planet => {
+		const theta = 0.001 * planet.position.distanceTo(center) / 300
+		rotateAroundPoint(planet, center, rotationAxis, theta)
+		planet.rotation.y += 0.01
+	})
 
-	requestAnimationFrame(animate);
+
+	requestAnimationFrame(update);
 	renderer.render(scene, camera);
+
 }
 
 
-animate()
+update()
