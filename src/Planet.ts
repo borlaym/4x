@@ -1,5 +1,9 @@
-import { Mesh } from "three";
+import { Mesh, Vector3 } from "three";
 import * as THREE from "three";
+import rotateAroundPoint from "./rotateAroundPoint";
+
+const center = new Vector3()
+const rotationAxis = new Vector3(0, 1, 0)
 
 export default class Planet {
 	public object: Mesh
@@ -17,5 +21,13 @@ export default class Planet {
 		planet.position.x = this.distanceFromSun * 4
 		this.object = planet
 
+		// random start pos
+		rotateAroundPoint(this.object, center, rotationAxis, THREE.Math.randFloat(0, Math.PI * 2))
+
+	}
+
+	public update() {
+		const theta = 1 / this.orbitalPeriod
+		rotateAroundPoint(this.object, center, rotationAxis, theta)
 	}
 }
