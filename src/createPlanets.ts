@@ -7,7 +7,8 @@ export default function createPlanets() {
 		'textures/mercury.jpg',
 		4.879,
 		57.9,
-		88
+		88,
+		1407.6
 	)
 
 	const Venus = new Planet(
@@ -15,7 +16,8 @@ export default function createPlanets() {
 		'textures/venus.png',
 		12.104,
 		108.2,
-		224.7
+		224.7,
+		-5832.5
 	)
 
 	const Earth = new Planet(
@@ -23,7 +25,8 @@ export default function createPlanets() {
 		'textures/earth.jpg',
 		12.756,
 		149.6,
-		365.2
+		365.2,
+		23.9
 	)
 
 	const Mars = new Planet(
@@ -31,7 +34,8 @@ export default function createPlanets() {
 		'textures/mars.jpg',
 		6.792,
 		227.9,
-		687.0
+		687.0,
+		24.6
 	)
 
 	return [Mercury, Venus, Earth, Mars]

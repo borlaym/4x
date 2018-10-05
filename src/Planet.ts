@@ -12,7 +12,8 @@ export default class Planet {
 		public readonly textureFile: string,
 		public readonly diameter: number,
 		public readonly distanceFromSun: number,
-		public readonly orbitalPeriod: number
+		public readonly orbitalPeriod: number,
+		public readonly rotationPeriod: number
 	) {
 		const planetGeometry = new THREE.SphereGeometry(this.diameter, 32, 32);
 		const planetTexture = new THREE.TextureLoader().load(this.textureFile);
@@ -29,5 +30,6 @@ export default class Planet {
 	public update() {
 		const theta = (1 / this.orbitalPeriod) / 10
 		rotateAroundPoint(this.object, center, rotationAxis, theta)
+		this.object.rotation.y += (1 / this.rotationPeriod) / 10
 	}
 }
