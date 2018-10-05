@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { uniq } from 'lodash'
-import { Vector3 } from 'three';
+import createStarBackground from 'createStarBackground';
+import createPlanets from 'createPlanets';
 
 const scene = new THREE.Scene();
 
@@ -13,34 +14,11 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.SphereGeometry(1, 32, 32);
-const texture = new THREE.TextureLoader().load('textures/earth.jpg');
-const material = new THREE.MeshBasicMaterial({ color: 0xffffff, map: texture });
-const sphere = new THREE.Mesh(geometry, material);
-scene.add(sphere);
+const planets = createPlanets()
+planets.forEach(planet => scene.add(planet))
+camera.lookAt(planets[0].position)
 
-camera.lookAt(sphere.position)
-
-const starsGeometry = new THREE.Geometry();
-const center = new Vector3()
-for (let i = 0; i < 10000; i++) {
-	let distance = 0
-	const star = new THREE.Vector3();
-	while (distance < 200) {
-		star.x = THREE.Math.randFloatSpread(2000);
-		star.y = THREE.Math.randFloatSpread(2000);
-		star.z = THREE.Math.randFloatSpread(2000);
-		distance = star.distanceTo(center)
-	}
-
-	starsGeometry.vertices.push(star);
-
-}
-
-const starsMaterial = new THREE.PointsMaterial({ color: 0x888888 });
-
-const starField = new THREE.Points(starsGeometry, starsMaterial);
-
+const starField = createStarBackground()
 scene.add(starField);
 
 interface InterfaceState {
@@ -94,6 +72,8 @@ function animate() {
 
 	state.mouseMovement.x = 0;
 	state.mouseMovement.y = 0;
+
+	camera.position.add(motion)
 
 
 	requestAnimationFrame(animate);
