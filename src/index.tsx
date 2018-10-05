@@ -5,10 +5,10 @@ import createPlanets from 'createPlanets';
 
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
 camera.position.y = 200;
 camera.position.z = 200;
-camera.rotation.x = -Math.PI / 2
+camera.rotation.x = -Math.PI / 4
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -16,7 +16,6 @@ document.body.appendChild(renderer.domElement);
 
 const planets = createPlanets()
 planets.forEach(planet => scene.add(planet))
-camera.lookAt(planets[0].position)
 
 const starField = createStarBackground()
 scene.add(starField);
@@ -52,7 +51,7 @@ const onMouseMove = (event: MouseEvent) => {
 document.addEventListener("mousemove", onMouseMove, false);
 
 
-const SPEED = 0.1
+const SPEED = 5
 
 function animate() {
 	const motion = new THREE.Vector3(0, 0, 0);
@@ -68,7 +67,6 @@ function animate() {
 	if (state.keysDown.indexOf('d') > -1) {
 		motion.x += SPEED;
 	}
-	// motion.applyEuler(new THREE.Euler(0, camera.rotation.y, 0));
 
 	state.mouseMovement.x = 0;
 	state.mouseMovement.y = 0;

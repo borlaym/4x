@@ -2,6 +2,10 @@ import * as THREE from "three";
 
 export default function createPlanets() {
 
+	const sunGeometry = new THREE.SphereGeometry(59, 32, 32);
+	const sunMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, emissive: 0xffff00 });
+	const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+
 	const mercuryGeometry = new THREE.SphereGeometry(4.879, 32, 32);
 	const mercuryTexture = new THREE.TextureLoader().load('textures/mercury.jpg');
 	const mercuryMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, map: mercuryTexture });
@@ -31,5 +35,5 @@ export default function createPlanets() {
 
 
 
-	return [mercury, venus, earth, mars]
+	return [sun, mercury, venus, earth, mars]
 }
