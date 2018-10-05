@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { uniq } from 'lodash'
+import { Vector3 } from 'three';
 
 const scene = new THREE.Scene();
 
@@ -19,6 +20,28 @@ const sphere = new THREE.Mesh(geometry, material);
 scene.add(sphere);
 
 camera.lookAt(sphere.position)
+
+const starsGeometry = new THREE.Geometry();
+const center = new Vector3()
+for (let i = 0; i < 10000; i++) {
+	let distance = 0
+	const star = new THREE.Vector3();
+	while (distance < 200) {
+		star.x = THREE.Math.randFloatSpread(2000);
+		star.y = THREE.Math.randFloatSpread(2000);
+		star.z = THREE.Math.randFloatSpread(2000);
+		distance = star.distanceTo(center)
+	}
+
+	starsGeometry.vertices.push(star);
+
+}
+
+const starsMaterial = new THREE.PointsMaterial({ color: 0x888888 });
+
+const starField = new THREE.Points(starsGeometry, starsMaterial);
+
+scene.add(starField);
 
 interface InterfaceState {
 	keysDown: string[],
