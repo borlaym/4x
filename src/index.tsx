@@ -16,8 +16,14 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+const sunGeometry = new THREE.SphereGeometry(59, 32, 32);
+const sunMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, emissive: 0xffff00 });
+const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+
+scene.add(sun)
+
 const planets = createPlanets()
-planets.forEach(planet => scene.add(planet))
+planets.forEach(planet => scene.add(planet.object))
 
 const starField = createStarBackground()
 scene.add(starField);
@@ -79,9 +85,8 @@ function update() {
 
 	// rotate around the sun and axis
 	planets.forEach(planet => {
-		const theta = 0.001 * planet.position.distanceTo(center) / 300
-		rotateAroundPoint(planet, center, rotationAxis, theta)
-		planet.rotation.y += 0.01
+		const theta = 1 / planet.orbitalPeriod
+		rotateAroundPoint(planet.object, center, rotationAxis, theta)
 	})
 
 
