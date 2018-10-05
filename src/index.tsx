@@ -3,6 +3,8 @@ import { uniq } from 'lodash'
 import createPlanets from 'createPlanets';
 import GameState from 'GameState';
 import SystemScene from 'SystemScene';
+import PlanetScene from 'PlanetScene';
+import Planet from 'Planet';
 
 
 const renderer = new THREE.WebGLRenderer();
@@ -31,7 +33,14 @@ document.addEventListener('keyup', (event) => {
 });
 
 document.addEventListener('click', () => {
-	state.activeScene.onClick(state)
+	state.activeScene.onClick(state, (planet?: Planet) => {
+		if (planet) {
+			const planetScene = new PlanetScene(planet)
+			state.activeScene = planetScene
+		} else {
+			state.activeScene = systemScene
+		}
+	})
 });
 
 const onMouseMove = (event: MouseEvent) => {
@@ -42,10 +51,9 @@ document.addEventListener("mousemove", onMouseMove, false);
 
 function update() {
 	planets.forEach(planet => planet.update())
-
+	state.activeScene.update(state)
 	renderer.render(state.activeScene.scene, state.activeScene.camera);
 	requestAnimationFrame(update);
-
 }
 
 

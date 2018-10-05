@@ -3,6 +3,7 @@ import * as THREE from "three";
 import Planet from "./Planet";
 import GameScene from "./GameScene";
 import GameState from "GameState";
+import createStarBackground from "./createStarBackground";
 
 const CAMERA_SPEED = 5
 
@@ -26,10 +27,14 @@ export default class SystemScene implements GameScene{
 
 		this.scene.add(sun)
 		planets.forEach(planet => this.scene.add(planet.object))
+
+		const starField = createStarBackground()
+		this.scene.add(starField);
+
 		this.planets = planets
 	}
 
-	public onClick(state: GameState) {
+	public onClick(state: GameState, callback: (planet: Planet) => void) {
 		const mouseRaycaster = new THREE.Raycaster();
 		mouseRaycaster.setFromCamera(state.mousePos, this.camera)
 		const intersects = mouseRaycaster.intersectObjects(this.planets.map(planet => planet.object))
@@ -37,7 +42,9 @@ export default class SystemScene implements GameScene{
 			const intersection = intersects[0]
 			const uuid = intersection.object.uuid
 			const planet = this.planets.find(planet => planet.object.uuid === uuid)
-			console.log(planet)
+			if (planet) {
+				callback(planet)
+			}
 		}
 	}
 
