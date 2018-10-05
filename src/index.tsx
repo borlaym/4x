@@ -28,7 +28,7 @@ scene.add(starField);
 
 interface InterfaceState {
 	keysDown: string[],
-	mouseMovement: {
+	mousePos: {
 		x: number,
 		y: number
 	}
@@ -36,7 +36,7 @@ interface InterfaceState {
 
 const state: InterfaceState = {
 	keysDown: [],
-	mouseMovement: {
+	mousePos: {
 		x: 0,
 		y: 0
 	}
@@ -51,11 +51,23 @@ document.addEventListener('keyup', (event) => {
 });
 
 const onMouseMove = (event: MouseEvent) => {
-	state.mouseMovement.x += event.movementX;
-	state.mouseMovement.y += event.movementY;
+	state.mousePos.x = (event.clientX / window.innerWidth) * 2 - 1
+	state.mousePos.y = - (event.clientY / window.innerHeight) * 2 + 1;
 };
 document.addEventListener("mousemove", onMouseMove, false);
 
+
+document.addEventListener('click', (event) => {
+	const mouseRaycaster = new THREE.Raycaster();
+	mouseRaycaster.setFromCamera(state.mousePos, camera)
+	const intersects = mouseRaycaster.intersectObjects(planets.map(planet => planet.object))
+	if (intersects.length === 1) {
+		const intersection = intersects[0]
+		const uuid = intersection.object.uuid
+		const planet = planets.find(planet => planet.object.uuid === uuid)
+		console.log(planet)
+	}
+});
 
 const SPEED = 5
 
@@ -73,9 +85,6 @@ function update() {
 	if (state.keysDown.indexOf('d') > -1) {
 		motion.x += SPEED;
 	}
-
-	state.mouseMovement.x = 0;
-	state.mouseMovement.y = 0;
 
 	camera.position.add(motion)
 

@@ -27,7 +27,7 @@ export default class Planet {
 	}
 
 	public update() {
-		const theta = 1 / this.orbitalPeriod
+		const theta = (1 / this.orbitalPeriod) / 10
 		rotateAroundPoint(this.object, center, rotationAxis, theta)
 	}
 }
