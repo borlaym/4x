@@ -13,7 +13,7 @@ export default function createPlanets() {
 
 	const Venus = new Planet(
 		'Venus',
-		'textures/venus.png',
+		'textures/venus.jpg',
 		12.104,
 		108.2,
 		224.7,
