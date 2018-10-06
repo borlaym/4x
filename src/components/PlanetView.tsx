@@ -26,9 +26,14 @@ const AbsoluteContainer = styled.div`
 const Panel = styled.div`
 	width: 500px;
 	border: 2px solid #003151;
-	background: rgba(55, 55, 72, 0.3);
+	background: rgba(0, 21, 35, 0.8);
 	color: white;
 	font-family: sans-serif;
+`
+
+const PlanetName = styled.h1`
+	font-size: 24px;
+	text-align: center;
 `
 
 export default class PlanetView extends React.Component<Props> {
@@ -41,7 +46,7 @@ export default class PlanetView extends React.Component<Props> {
 		return (
 			<AbsoluteContainer top={20} right={20}>
 				<Panel>
-					{planet.name}
+					<PlanetName>{planet.name}</PlanetName>
 				</Panel>
 			</AbsoluteContainer>
 		)

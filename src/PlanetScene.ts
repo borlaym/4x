@@ -4,6 +4,8 @@ import Planet from "./Planet";
 import GameScene from "./GameScene";
 import GameState from "GameState";
 
+const cameraDistance = (diameter: number) => diameter * 2
+
 export default class PlanetScene implements GameScene {
 	public readonly scene: THREE.Scene
 	public readonly camera: Camera
@@ -14,7 +16,7 @@ export default class PlanetScene implements GameScene {
 
 		const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
 		camera.position.set(planet.object.position.x, planet.object.position.y, planet.object.position.z);
-		camera.position.add(new Vector3(0, planet.diameter + 5, 0))
+		camera.position.add(new Vector3(0, cameraDistance(planet.diameter), 0))
 		this.camera = camera
 
 		this.scene.add(planet.object)
@@ -33,7 +35,7 @@ export default class PlanetScene implements GameScene {
 	
 	public update(state: GameState) {
 		this.camera.position.set(this.planet.object.position.x, this.planet.object.position.y, this.planet.object.position.z);
-		this.camera.position.add(new Vector3(0, 0, this.planet.diameter + 10))
+		this.camera.position.add(new Vector3(0, 0, cameraDistance(this.planet.diameter)))
 		this.camera.lookAt(this.planet.object.position)		
 	}
 }
