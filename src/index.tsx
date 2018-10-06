@@ -8,6 +8,7 @@ import Planet from 'Planet';
 import UI from 'components/UI';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
+import PlanetController from 'controllers/PlanetController';
 
 
 const renderer = new THREE.WebGLRenderer();
@@ -15,6 +16,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 const planets = createPlanets()
+const planetController = new PlanetController(planets)
+console.log(planetController)
 
 const systemScene = new SystemScene(planets)
 const state: GameState = {

@@ -23,7 +23,7 @@ export default class SystemScene implements GameScene{
 		this.camera = camera
 
 		const sunGeometry = new THREE.SphereGeometry(59, 32, 32);
-		const sunMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, emissive: 0xffff00 });
+		const sunMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, emissive: 0xfff797 });
 		const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 
 		this.scene.add(sun)
