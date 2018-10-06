@@ -5,6 +5,9 @@ import GameState from 'GameState';
 import SystemScene from 'SystemScene';
 import PlanetScene from 'PlanetScene';
 import Planet from 'Planet';
+import UI from 'components/UI';
+import * as ReactDOM from 'react-dom';
+import * as React from 'react';
 
 
 const renderer = new THREE.WebGLRenderer();
@@ -55,8 +58,19 @@ function update() {
 	planets.forEach(planet => planet.update())
 	state.activeScene.update(state)
 	renderer.render(state.activeScene.scene, state.activeScene.camera);
+	renderUI(state)
 	requestAnimationFrame(update);
 }
 
+const reactRoot = document.createElement('div')
+document.body.appendChild(reactRoot)
 
 update()
+
+
+function renderUI(gameState: GameState) {
+	ReactDOM.render(
+		<UI gameState={gameState} />,
+		reactRoot
+	)
+}

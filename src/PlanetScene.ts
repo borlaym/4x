@@ -7,7 +7,8 @@ import GameState from "GameState";
 export default class PlanetScene implements GameScene {
 	public readonly scene: THREE.Scene
 	public readonly camera: Camera
-	private readonly planet: Planet
+	public readonly name: string = 'PlanetScene'
+	public readonly planet: Planet
 	constructor(planet: Planet) {
 		this.scene = new THREE.Scene();
 

@@ -11,6 +11,7 @@ const CAMERA_SPEED = 5
 export default class SystemScene implements GameScene{
 	public readonly scene: THREE.Scene
 	public readonly camera: Camera
+	public readonly name: string = 'SystemScene'
 	private readonly planets: Planet[]
 	constructor(planets: Planet[]) {
 		this.scene = new THREE.Scene();
