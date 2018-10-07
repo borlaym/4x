@@ -1,10 +1,9 @@
 import * as THREE from 'three';
 import { uniq } from 'lodash'
-import createPlanets from 'createPlanets';
 import GameState from 'GameState';
 import SystemScene from 'SystemScene';
 import PlanetScene from 'PlanetScene';
-import Planet from 'Planet';
+import PlanetMesh from 'PlanetMesh';
 import UI from 'components/UI';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
@@ -15,11 +14,10 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const planets = createPlanets()
-const planetController = new PlanetController(planets)
+const planetController = new PlanetController()
 console.log(planetController)
 
-const systemScene = new SystemScene(planets)
+const systemScene = new SystemScene(planetController.planets.map(planet => planet.mesh))
 const state: GameState = {
 	keysDown: [],
 	mousePos: {
@@ -39,7 +37,7 @@ document.addEventListener('keyup', (event) => {
 });
 
 document.addEventListener('click', () => {
-	state.activeScene.onClick(state, (planet?: Planet) => {
+	state.activeScene.onClick(state, (planet?: PlanetMesh) => {
 		if (planet) {
 			const planetScene = new PlanetScene(planet)
 			state.activeScene = planetScene
@@ -58,7 +56,8 @@ const onMouseMove = (event: MouseEvent) => {
 document.addEventListener("mousemove", onMouseMove, false);
 
 function update() {
-	planets.forEach(planet => planet.update())
+	planetController.planets.forEach(planet => planet.update())
+	planetController.planets.forEach(planet => planet.mesh.update())
 	state.activeScene.update(state)
 	renderer.render(state.activeScene.scene, state.activeScene.camera);
 	renderUI(state)

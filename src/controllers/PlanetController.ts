@@ -1,13 +1,48 @@
-import PlanetModel from "models/PlanetModel";
-import Planet from "../Planet";
+import Planet from "models/Planet";
+import { Vector3 } from "three";
+import * as THREE from "three";
+
+const sunPosition = new Vector3()
 
 export default class PlanetController {
-	public readonly planets: PlanetModel[] = []
-	constructor(planetObjects: Planet[]) {
-		this.planets.push(new PlanetModel('Mercury', planetObjects.find(planet => planet.name === 'Mercury')))
-		this.planets.push(new PlanetModel('Venus', planetObjects.find(planet => planet.name === 'Venus')))
-		this.planets.push(new PlanetModel('Earth', planetObjects.find(planet => planet.name === 'Earth')))
-		this.planets.push(new PlanetModel('Mars', planetObjects.find(planet => planet.name === 'Mars')))
+	public readonly planets: Planet[] = []
+	constructor() {
+		this.planets.push(new Planet(
+			'Mercury',
+			4.879,
+			57.9,
+			88,
+			1407.6,
+			sunPosition,
+			THREE.Math.randFloat(0, Math.PI * 2)
+		))
+		this.planets.push(new Planet(
+			'Venus',
+			12.104,
+			108.2,
+			224.7,
+			-5832.5,
+			sunPosition,
+			THREE.Math.randFloat(0, Math.PI * 2)
+		))
+		this.planets.push(new Planet(
+			'Earth',
+			12.756,
+			149.6,
+			365.2,
+			23.9,
+			sunPosition,
+			THREE.Math.randFloat(0, Math.PI * 2)
+		))
+		this.planets.push(new Planet(
+			'Mars',
+			6.792,
+			227.9,
+			687.0,
+			24.6,
+			sunPosition,
+			THREE.Math.randFloat(0, Math.PI * 2)
+		))
 	}
 
 	public getByName(name: string) {

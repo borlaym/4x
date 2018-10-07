@@ -1,6 +1,6 @@
 import { Camera } from "three";
 import * as THREE from "three";
-import Planet from "./Planet";
+import PlanetMesh from "PlanetMesh";
 import GameScene from "./GameScene";
 import GameState from "GameState";
 import createStarBackground from "./createStarBackground";
@@ -12,8 +12,8 @@ export default class SystemScene implements GameScene{
 	public readonly scene: THREE.Scene
 	public readonly camera: Camera
 	public readonly name: string = 'SystemScene'
-	private readonly planets: Planet[]
-	constructor(planets: Planet[]) {
+	private readonly planets: PlanetMesh[]
+	constructor(planets: PlanetMesh[]) {
 		this.scene = new THREE.Scene();
 
 		const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 10000);
@@ -27,7 +27,7 @@ export default class SystemScene implements GameScene{
 		const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 
 		this.scene.add(sun)
-		planets.forEach(planet => this.scene.add(planet.object))
+		planets.forEach(planet => this.scene.add(planet.mesh))
 
 		const starField = createStarBackground()
 		this.scene.add(starField);
@@ -36,17 +36,17 @@ export default class SystemScene implements GameScene{
 	}
 
 	public onShow() {
-		this.planets.forEach(planet => this.scene.add(planet.object))
+		this.planets.forEach(planet => this.scene.add(planet.mesh))
 	}
 
-	public onClick(state: GameState, callback: (planet: Planet) => void) {
+	public onClick(state: GameState, callback: (planet: PlanetMesh) => void) {
 		const mouseRaycaster = new THREE.Raycaster();
 		mouseRaycaster.setFromCamera(state.mousePos, this.camera)
-		const intersects = mouseRaycaster.intersectObjects(this.planets.map(planet => planet.object))
+		const intersects = mouseRaycaster.intersectObjects(this.planets.map(planet => planet.mesh))
 		if (intersects.length === 1) {
 			const intersection = intersects[0]
 			const uuid = intersection.object.uuid
-			const planet = this.planets.find(planet => planet.object.uuid === uuid)
+			const planet = this.planets.find(planet => planet.mesh.uuid === uuid)
 			if (planet) {
 				callback(planet)
 			}
