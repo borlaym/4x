@@ -8,6 +8,7 @@ import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import PlanetController from 'controllers/PlanetController';
 import Planet from './models/Planet';
+import Company, { CompanyColor } from 'models/Company';
 
 
 const renderer = new THREE.WebGLRenderer();
@@ -18,13 +19,15 @@ const planetController = new PlanetController()
 console.log(planetController)
 
 const systemScene = new SystemScene(planetController.planets)
+const company = new Company('Player', CompanyColor.Red)
 const state: GameState = {
 	keysDown: [],
 	mousePos: {
 		x: 0,
 		y: 0
 	},
-	activeScene: systemScene
+	activeScene: systemScene,
+	company
 };
 
 

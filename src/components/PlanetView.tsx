@@ -3,26 +3,11 @@ import GameState from "GameState";
 import styled from 'styled-components'
 import PlanetScene from "PlanetScene";
 import TileComponent from "./Tile";
+import AbsoluteContainer from "./AbsoluteContainer";
 
 interface Props {
 	gameState: GameState
 }
-
-interface AbsoluteContainerProps {
-	top?: number,
-	bottom?: number,
-	left?: number,
-	right?: number
-}
-
-const AbsoluteContainer = styled.div`
-	position: absolute;
-	display: flex;
-	${(props: AbsoluteContainerProps) => props.top && `top: ${props.top}px;`}
-	${(props: AbsoluteContainerProps) => props.left && `left: ${props.left}px;`}
-	${(props: AbsoluteContainerProps) => props.right && `right: ${props.right}px;`}
-	${(props: AbsoluteContainerProps) => props.bottom && `bottom: ${props.bottom}px;`}
-`
 
 const Panel = styled.div`
 	width: 500px;
@@ -56,7 +41,7 @@ export default class PlanetView extends React.Component<Props> {
 		const planet = scene.planet
 		console.log(planet)
 		return (
-			<AbsoluteContainer top={20} right={20}>
+			<AbsoluteContainer top={50} right={20}>
 				<Panel>
 					<PlanetName>{planet.name}</PlanetName>
 					<Map>

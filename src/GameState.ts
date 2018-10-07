@@ -1,4 +1,5 @@
 import GameScene from "GameScene";
+import Company from "models/Company";
 
 interface GameState {
 	keysDown: string[],
@@ -6,7 +7,8 @@ interface GameState {
 		x: number,
 		y: number
 	},
-	activeScene: GameScene
+	activeScene: GameScene,
+	company: Company
 };
 
 export default GameState
