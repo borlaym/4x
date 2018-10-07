@@ -2,6 +2,7 @@ import Building from "./Building";
 import { Vector3, Euler } from "three";
 import rotateAroundPoint from "rotateAroundPoint";
 import PlanetMesh from "PlanetMesh";
+import Tile from "./Tile";
 
 const rotationAxis = new Vector3(0, 1, 0)
 
@@ -17,7 +18,8 @@ export default class Planet {
 		public readonly orbitalPeriod: number,
 		public readonly rotationPeriod: number,
 		public readonly orbitsAround: Vector3 = new Vector3(),
-		startingRotation: number
+		startingRotation: number,
+		public readonly tiles: Tile[][]
 	){
 		this.position = new Vector3(distanceFromSun * 4, 0, 0)
 		// Here I'm reusing the starting rotation as both the position around the sun and the planet's local rotation
