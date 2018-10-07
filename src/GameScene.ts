@@ -1,11 +1,11 @@
 import GameState from "GameState";
-import PlanetMesh from "PlanetMesh";
+import Planet from "./models/Planet";
 
 interface GameScene {
 	scene: THREE.Scene,
 	camera: THREE.Camera,
 	name: string,
-	onClick: (state: GameState, callback: (planet?: PlanetMesh) => void) => void,
+	onClick: (state: GameState, callback: (planet?: Planet) => void) => void,
 	onShow: () => void,
 	update: (state: GameState) => void
 }

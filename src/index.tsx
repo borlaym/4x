@@ -3,11 +3,11 @@ import { uniq } from 'lodash'
 import GameState from 'GameState';
 import SystemScene from 'SystemScene';
 import PlanetScene from 'PlanetScene';
-import PlanetMesh from 'PlanetMesh';
 import UI from 'components/UI';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import PlanetController from 'controllers/PlanetController';
+import Planet from './models/Planet';
 
 
 const renderer = new THREE.WebGLRenderer();
@@ -17,7 +17,7 @@ document.body.appendChild(renderer.domElement);
 const planetController = new PlanetController()
 console.log(planetController)
 
-const systemScene = new SystemScene(planetController.planets.map(planet => planet.mesh))
+const systemScene = new SystemScene(planetController.planets)
 const state: GameState = {
 	keysDown: [],
 	mousePos: {
@@ -37,7 +37,7 @@ document.addEventListener('keyup', (event) => {
 });
 
 document.addEventListener('click', () => {
-	state.activeScene.onClick(state, (planet?: PlanetMesh) => {
+	state.activeScene.onClick(state, (planet?: Planet) => {
 		if (planet) {
 			const planetScene = new PlanetScene(planet)
 			state.activeScene = planetScene

@@ -8,7 +8,9 @@ export default class GameObject {
 	) {
 		this.id = uuid()
 	}
-	public update(dt: number): void {}
+	public update(dt: number): void {
+		return undefined;
+	}
 	public getComponent(name: string): Component {
 		const component = this.components.find(c => c.name === name)
 		if (!component) {
