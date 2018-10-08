@@ -9,6 +9,7 @@ import * as React from 'react';
 import PlanetController from 'controllers/PlanetController';
 import Planet from './models/Planet';
 import Company, { CompanyColor } from 'models/Company';
+import EventBus from 'EventBus';
 
 
 const renderer = new THREE.WebGLRenderer();
@@ -16,7 +17,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 const planetController = new PlanetController()
-console.log(planetController)
+
+let lastUpdate = Date.now()
 
 const systemScene = new SystemScene(planetController.planets)
 const company = new Company('Player', CompanyColor.Red)
@@ -26,6 +28,8 @@ const state: GameState = {
 		x: 0,
 		y: 0
 	},
+	days: 0,
+	speed: 10,
 	activeScene: systemScene,
 	company
 };
@@ -59,7 +63,15 @@ const onMouseMove = (event: MouseEvent) => {
 document.addEventListener("mousemove", onMouseMove, false);
 
 function update() {
-	planetController.planets.forEach(planet => planet.update())
+	const now = Date.now()
+	const dt = now - lastUpdate
+	lastUpdate = now
+
+	// Update game time
+	const dDays = dt / 1000 * state.speed
+	state.days += dDays
+
+	planetController.planets.forEach(planet => planet.update(dDays))
 	planetController.planets.forEach(planet => planet.mesh.update())
 	state.activeScene.update(state)
 	renderer.render(state.activeScene.scene, state.activeScene.camera);
@@ -79,3 +91,7 @@ function renderUI(gameState: GameState) {
 		reactRoot
 	)
 }
+
+EventBus.on('SET_SPEED_1', () => { state.speed = 10 })
+EventBus.on('SET_SPEED_2', () => { state.speed = 100 })
+EventBus.on('SET_SPEED_3', () => { state.speed = 500 })

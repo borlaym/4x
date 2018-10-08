@@ -7,6 +7,8 @@ interface GameState {
 		x: number,
 		y: number
 	},
+	days: number,
+	speed: number,
 	activeScene: GameScene,
 	company: Company
 };

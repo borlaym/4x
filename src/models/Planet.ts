@@ -15,7 +15,13 @@ export default class Planet {
 		public readonly name: string,
 		public readonly diameter: number,
 		public readonly distanceFromSun: number,
+		/**
+		 * Number of days it takes for the planet to complete a full orbit
+		 */
 		public readonly orbitalPeriod: number,
+		/**
+		 * Number of hours it takes the planet to rotate around its axis
+		 */
 		public readonly rotationPeriod: number,
 		public readonly orbitsAround: Vector3 = new Vector3(),
 		startingRotation: number,
@@ -28,9 +34,9 @@ export default class Planet {
 		this.mesh = new PlanetMesh(name, `textures/${name.toLowerCase()}.jpg`, diameter, this)
 	}
 
-	public update() {
-		const theta = (1 / this.orbitalPeriod) / 10
+	public update(dDays: number) {
+		const theta = (dDays / this.orbitalPeriod) * ((Math.PI * 2) / this.orbitalPeriod)
 		rotateAroundPoint(this.position, this.orbitsAround, rotationAxis, theta)
-		this.rotation.y += (1 / this.rotationPeriod) / 10
+		this.rotation.y += ((dDays * 24) / this.rotationPeriod) * ((Math.PI * 2) / this.rotationPeriod)
 	}
 }
