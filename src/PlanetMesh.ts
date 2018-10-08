@@ -41,6 +41,12 @@ export default class PlanetMesh {
 		this.collider.position.set(this.model.position.x, this.model.position.y, this.model.position.z)
 		this.namePlate.position.set(this.model.position.x, this.model.diameter * 1.5, this.model.position.z)
 		this.mesh.rotation.y = this.model.rotation.y
+
+		if (this.isHighlighted) {
+			this.namePlate.material.visible = true
+		} else {
+			this.namePlate.material.visible = false
+		}
 	}
 
 	private drawNameplate() {
