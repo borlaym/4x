@@ -25,7 +25,7 @@ export default class Planet {
 		// Here I'm reusing the starting rotation as both the position around the sun and the planet's local rotation
 		rotateAroundPoint(this.position, this.orbitsAround, rotationAxis, startingRotation)
 		this.rotation = new Euler(0, startingRotation, 0)
-		this.mesh = new PlanetMesh(name, `textures/${name}.jpg`, diameter, this)
+		this.mesh = new PlanetMesh(name, `textures/${name.toLowerCase()}.jpg`, diameter, this)
 	}
 
 	public update() {
