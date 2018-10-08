@@ -10,6 +10,8 @@ import PlanetController from 'controllers/PlanetController';
 import Planet from './models/Planet';
 import Company, { CompanyColor } from 'models/Company';
 import EventBus from 'EventBus';
+import Ship from 'models/Ship';
+import ShipMesh from 'ShipMesh';
 
 const SPEED1 = 0.5
 const SPEED2 = 1
@@ -24,7 +26,13 @@ const planetController = new PlanetController()
 
 let lastUpdate = Date.now()
 
+
+
 const systemScene = new SystemScene(planetController.planets)
+const ship = new Ship(planetController.planets[2])
+const shipMesh = new ShipMesh(ship)
+
+systemScene.scene.add(shipMesh.mesh)
 const company = new Company('Player', CompanyColor.Red)
 const state: GameState = {
 	keysDown: [],
@@ -78,6 +86,8 @@ function update() {
 	planetController.planets.forEach(planet => planet.update(dDays))
 	planetController.planets.forEach(planet => planet.mesh.update())
 	state.activeScene.update(state)
+	ship.update(dDays)
+	shipMesh.update()
 	renderer.render(state.activeScene.scene, state.activeScene.camera);
 	renderUI(state)
 	requestAnimationFrame(update);

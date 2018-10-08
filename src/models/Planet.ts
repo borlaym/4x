@@ -9,7 +9,7 @@ const rotationAxis = new Vector3(0, 1, 0)
 /**
  * Slow down planet rotation, since it has no gameplay effect anyway
  */
-const ROTATION_CONSTANT = 0.2
+const ROTATION_CONSTANT = 0.1
 
 export default class Planet {
 	public readonly position: Vector3
