@@ -6,6 +6,11 @@ import Tile from "./Tile";
 
 const rotationAxis = new Vector3(0, 1, 0)
 
+/**
+ * Slow down planet rotation, since it has no gameplay effect anyway
+ */
+const ROTATION_CONSTANT = 0.2
+
 export default class Planet {
 	public readonly position: Vector3
 	public readonly rotation: Euler
@@ -37,6 +42,6 @@ export default class Planet {
 	public update(dDays: number) {
 		const theta = (dDays / this.orbitalPeriod) * (Math.PI * 2)
 		rotateAroundPoint(this.position, this.orbitsAround, rotationAxis, theta)
-		this.rotation.y += ((dDays * 24) / this.rotationPeriod) * (Math.PI * 2)
+		this.rotation.y += ((dDays * 24) / this.rotationPeriod) * (Math.PI * 2) * ROTATION_CONSTANT
 	}
 }

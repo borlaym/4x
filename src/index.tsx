@@ -11,6 +11,10 @@ import Planet from './models/Planet';
 import Company, { CompanyColor } from 'models/Company';
 import EventBus from 'EventBus';
 
+const SPEED1 = 0.5
+const SPEED2 = 1
+const SPEED3 = 3
+
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -29,7 +33,7 @@ const state: GameState = {
 		y: 0
 	},
 	days: 0,
-	speed: 1,
+	speed: SPEED1,
 	activeScene: systemScene,
 	company
 };
@@ -92,6 +96,6 @@ function renderUI(gameState: GameState) {
 	)
 }
 
-EventBus.on('SET_SPEED_1', () => { state.speed = 1 })
-EventBus.on('SET_SPEED_2', () => { state.speed = 5 })
-EventBus.on('SET_SPEED_3', () => { state.speed = 10 })
+EventBus.on('SET_SPEED_1', () => { state.speed = SPEED1 })
+EventBus.on('SET_SPEED_2', () => { state.speed = SPEED2 })
+EventBus.on('SET_SPEED_3', () => { state.speed = SPEED3 })
