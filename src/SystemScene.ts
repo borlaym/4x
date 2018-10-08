@@ -28,6 +28,7 @@ export default class SystemScene implements GameScene{
 
 		this.scene.add(sun)
 		planets.forEach(planet => this.scene.add(planet.mesh.mesh))
+		planets.forEach(planet => this.scene.add(planet.mesh.collider))
 
 		const starField = createStarBackground()
 		this.scene.add(starField);
@@ -37,16 +38,17 @@ export default class SystemScene implements GameScene{
 
 	public onShow() {
 		this.planets.forEach(planet => this.scene.add(planet.mesh.mesh))
+		this.planets.forEach(planet => this.scene.add(planet.mesh.collider))
 	}
 
 	public onClick(state: GameState, callback: (planet: Planet) => void) {
 		const mouseRaycaster = new THREE.Raycaster();
 		mouseRaycaster.setFromCamera(state.mousePos, this.camera)
-		const intersects = mouseRaycaster.intersectObjects(this.planets.map(planet => planet.mesh.mesh))
+		const intersects = mouseRaycaster.intersectObjects(this.planets.map(planet => planet.mesh.collider))
 		if (intersects.length === 1) {
 			const intersection = intersects[0]
 			const uuid = intersection.object.uuid
-			const planet = this.planets.find(planet => planet.mesh.mesh.uuid === uuid)
+			const planet = this.planets.find(planet => planet.mesh.collider.uuid === uuid)
 			if (planet) {
 				callback(planet)
 			}

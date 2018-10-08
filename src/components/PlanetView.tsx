@@ -39,7 +39,6 @@ export default class PlanetView extends React.Component<Props> {
 			return null
 		}
 		const planet = scene.planet
-		console.log(planet)
 		return (
 			<AbsoluteContainer top={50} right={20}>
 				<Panel>
