@@ -31,6 +31,7 @@ let lastUpdate = Date.now()
 const systemScene = new SystemScene(planetController.planets)
 const ship = new Ship(planetController.planets[2])
 const shipMesh = new ShipMesh(ship)
+ship.goToPlanet(planetController.planets[1])
 
 systemScene.scene.add(shipMesh.mesh)
 const company = new Company('Player', CompanyColor.Red)
