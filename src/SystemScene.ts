@@ -29,6 +29,7 @@ export default class SystemScene implements GameScene{
 		this.scene.add(sun)
 		planets.forEach(planet => this.scene.add(planet.mesh.mesh))
 		planets.forEach(planet => this.scene.add(planet.mesh.collider))
+		planets.forEach(planet => this.scene.add(planet.mesh.namePlate))
 
 		const starField = createStarBackground()
 		this.scene.add(starField);
@@ -39,6 +40,7 @@ export default class SystemScene implements GameScene{
 	public onShow() {
 		this.planets.forEach(planet => this.scene.add(planet.mesh.mesh))
 		this.planets.forEach(planet => this.scene.add(planet.mesh.collider))
+		this.planets.forEach(planet => this.scene.add(planet.mesh.namePlate))
 	}
 
 	public onClick(state: GameState, callback: (planet: Planet) => void) {
@@ -71,5 +73,20 @@ export default class SystemScene implements GameScene{
 		}
 
 		this.camera.position.add(motion)
+
+		// Check for hover
+		this.planets.forEach(planet => { planet.mesh.isHighlighted = false })
+		const mouseRaycaster = new THREE.Raycaster();
+		mouseRaycaster.setFromCamera(state.mousePos, this.camera)
+		const intersects = mouseRaycaster.intersectObjects(this.planets.map(planet => planet.mesh.collider))
+
+		if (intersects.length === 1) {
+			const intersection = intersects[0]
+			const uuid = intersection.object.uuid
+			const planet = this.planets.find(planet => planet.mesh.collider.uuid === uuid)
+			if (planet) {
+				planet.mesh.isHighlighted = true
+			}
+		}
 	}
 }

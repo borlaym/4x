@@ -84,6 +84,7 @@ function update() {
 	const dDays = dt / 1000 * state.speed
 	state.days += dDays
 
+	// Update models
 	planetController.planets.forEach(planet => planet.update(dDays))
 	planetController.planets.forEach(planet => planet.mesh.update())
 	state.activeScene.update(state)
