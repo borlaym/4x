@@ -35,8 +35,8 @@ export default class Planet {
 	}
 
 	public update(dDays: number) {
-		const theta = (dDays / this.orbitalPeriod) * ((Math.PI * 2) / this.orbitalPeriod)
+		const theta = (dDays / this.orbitalPeriod) * (Math.PI * 2)
 		rotateAroundPoint(this.position, this.orbitsAround, rotationAxis, theta)
-		this.rotation.y += ((dDays * 24) / this.rotationPeriod) * ((Math.PI * 2) / this.rotationPeriod)
+		this.rotation.y += ((dDays * 24) / this.rotationPeriod) * (Math.PI * 2)
 	}
 }

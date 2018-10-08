@@ -29,7 +29,7 @@ const state: GameState = {
 		y: 0
 	},
 	days: 0,
-	speed: 10,
+	speed: 1,
 	activeScene: systemScene,
 	company
 };
@@ -92,6 +92,6 @@ function renderUI(gameState: GameState) {
 	)
 }
 
-EventBus.on('SET_SPEED_1', () => { state.speed = 10 })
-EventBus.on('SET_SPEED_2', () => { state.speed = 100 })
-EventBus.on('SET_SPEED_3', () => { state.speed = 500 })
+EventBus.on('SET_SPEED_1', () => { state.speed = 1 })
+EventBus.on('SET_SPEED_2', () => { state.speed = 5 })
+EventBus.on('SET_SPEED_3', () => { state.speed = 10 })
