@@ -4,7 +4,7 @@ import rotateAroundPoint from "rotateAroundPoint";
 
 const orbitVector = (diameter: number) => new Vector3(diameter * 2, 0, 0)
 const orbitingAxis = new Vector3(0, 1, 0)
-const SPEED = 40 // Speed per days
+const SPEED = 60 // Speed per days
 
 export default class Ship {
 	public orbitingAround: Planet | null
@@ -30,7 +30,7 @@ export default class Ship {
 		} else if (this.movingTo && this.onRouteTo) {
 			const movement = this.movingTo.clone().sub(this.position).setLength(dDay * SPEED)
 			this.position.add(movement)
-			if (this.position.distanceTo(this.onRouteTo.position) < 50) {
+			if (this.position.distanceTo(this.onRouteTo.position) < SPEED) {
 				this.movingTo = null
 				this.orbitingAround = this.onRouteTo
 				this.onRouteTo = null
@@ -48,7 +48,7 @@ export default class Ship {
 		const planetPositionAfterDays = planet.position.clone()
 		while (planetPositionAfterDays.distanceTo(this.position) > days * SPEED) {
 			days = days + 1
-			const orbit = (days / planet.orbitalPeriod) * (Math.PI * 2)
+			const orbit = (1 / planet.orbitalPeriod) * (Math.PI * 2)
 			rotateAroundPoint(planetPositionAfterDays, planet.orbitsAround, orbitingAxis, orbit)
 		}
 		this.movingTo = planetPositionAfterDays
