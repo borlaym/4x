@@ -16,7 +16,7 @@ export default class SystemScene implements GameScene{
 	constructor(planets: Planet[]) {
 		this.scene = new THREE.Scene();
 
-		const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 10000);
+		const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 100000);
 		camera.position.y = 1000;
 		camera.position.z = 1000;
 		camera.rotation.x = -Math.PI / 4

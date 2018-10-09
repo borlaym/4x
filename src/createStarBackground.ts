@@ -8,10 +8,10 @@ export default function createStarBackground() {
 	for (let i = 0; i < 40000; i++) {
 		let distance = 0
 		const star = new THREE.Vector3();
-		while (distance < 2000) {
-			star.x = THREE.Math.randFloatSpread(20000);
-			star.y = THREE.Math.randFloatSpread(20000);
-			star.z = THREE.Math.randFloatSpread(20000);
+		while (distance < 20000) {
+			star.x = THREE.Math.randFloatSpread(200000);
+			star.y = THREE.Math.randFloatSpread(200000);
+			star.z = THREE.Math.randFloatSpread(200000);
 			distance = star.distanceTo(center)
 		}
 

@@ -44,10 +44,10 @@ export default class PlanetView extends React.Component<Props> {
 				<Panel>
 					<PlanetName>{planet.name}</PlanetName>
 					<Map>
-						{planet.tiles.map(row => (
-							<TileRow>
-								{row.map(tile => (
-									<TileComponent {...tile} />
+						{planet.tiles.map((row, index) => (
+							<TileRow key={index}>
+								{row.map((tile, rowIndex) => (
+									<TileComponent {...tile} key={`${index}-${rowIndex}`}/>
 								))}
 							</TileRow>
 						))}

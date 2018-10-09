@@ -82,6 +82,18 @@ export default class PlanetController {
 				]
 			)
 		))
+		this.planets.push(new Planet(
+			'Jupiter',
+			142.984,
+			778.6,
+			4331,
+			9.9,
+			sunPosition,
+			THREE.Math.randFloat(0, Math.PI * 2),
+			createTiles(
+				[]
+			)
+		))
 	}
 
 	public getByName(name: string) {
