@@ -56,6 +56,11 @@ document.addEventListener('keyup', (event) => {
 	state.keysDown = state.keysDown.filter(key => key !== event.key);
 });
 
+window.addEventListener('wheel', (event) => {
+	event.preventDefault()
+	state.activeScene.onWheel(event)
+}, false);
+
 document.addEventListener('click', () => {
 	state.activeScene.onClick(state, (planet?: Planet) => {
 		if (planet) {

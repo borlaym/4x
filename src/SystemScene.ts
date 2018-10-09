@@ -1,4 +1,4 @@
-import { Camera } from "three";
+import { Camera, Vector3 } from "three";
 import * as THREE from "three";
 import Planet from "./models/Planet";
 import GameScene from "./GameScene";
@@ -55,6 +55,12 @@ export default class SystemScene implements GameScene{
 				callback(planet)
 			}
 		}
+	}
+
+	public onWheel(event: MouseWheelEvent) {
+		const cameraDirection = new Vector3()
+		this.camera.getWorldDirection(cameraDirection)
+		this.camera.position.add(cameraDirection.setLength(-event.deltaY))
 	}
 
 	public update(state: GameState) {

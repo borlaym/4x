@@ -29,6 +29,10 @@ export default class PlanetScene implements GameScene {
 		return false
 	}
 
+	public onWheel() {
+		return false
+	}
+
 	public onClick(state: GameState, callback: (planet?: Planet) => void) {
 		callback()
 	}
