@@ -10,6 +10,7 @@ const rotationAxis = new Vector3(0, 1, 0)
  * Slow down planet rotation, since it has no gameplay effect anyway
  */
 const ROTATION_CONSTANT = 0.1
+export const DISTANCE_CONSTANT = 4
 
 export default class Planet {
 	public readonly position: Vector3
@@ -32,7 +33,7 @@ export default class Planet {
 		startingRotation: number,
 		public readonly tiles: Tile[][]
 	){
-		this.position = new Vector3(distanceFromSun * 4, 0, 0)
+		this.position = new Vector3(distanceFromSun * DISTANCE_CONSTANT, 0, 0)
 		// Here I'm reusing the starting rotation as both the position around the sun and the planet's local rotation
 		rotateAroundPoint(this.position, this.orbitsAround, rotationAxis, startingRotation)
 		this.rotation = new Euler(0, startingRotation, 0)

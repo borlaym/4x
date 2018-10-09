@@ -1,6 +1,6 @@
 import { Camera, Vector3 } from "three";
 import * as THREE from "three";
-import Planet from "./models/Planet";
+import Planet, { DISTANCE_CONSTANT } from "./models/Planet";
 import GameScene from "./GameScene";
 import GameState from "GameState";
 import createStarBackground from "./createStarBackground";
@@ -25,8 +25,23 @@ export default class SystemScene implements GameScene{
 		const sunGeometry = new THREE.SphereGeometry(59, 32, 32);
 		const sunMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, emissive: 0xfff797 });
 		const sun = new THREE.Mesh(sunGeometry, sunMaterial);
-
 		this.scene.add(sun)
+
+		 // Orbit circles
+		 planets.forEach(planet => {
+			const geometry = new THREE.CircleGeometry(
+				planet.distanceFromSun * DISTANCE_CONSTANT,
+				100
+			);
+			geometry.vertices.shift()
+			const material = new THREE.LineBasicMaterial({ color: 0xaaaaaa });
+			// @ts-ignore
+			const mesh = new THREE.LineLoop(geometry, material);
+			mesh.rotation.x = Math.PI / 2
+			this.scene.add(mesh);
+		})
+
+
 		planets.forEach(planet => this.scene.add(planet.mesh.mesh))
 		planets.forEach(planet => this.scene.add(planet.mesh.collider))
 		planets.forEach(planet => this.scene.add(planet.mesh.namePlate))
