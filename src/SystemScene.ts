@@ -1,4 +1,4 @@
-import { Camera, Vector3 } from "three";
+import { Camera, Vector3, Euler } from "three";
 import * as THREE from "three";
 import Planet, { DISTANCE_CONSTANT } from "./models/Planet";
 import GameScene from "./GameScene";
@@ -6,13 +6,15 @@ import GameState from "GameState";
 import createStarBackground from "./createStarBackground";
 
 const CAMERA_SPEED = 5
-
-
+const cameraDistance = (diameter: number) => diameter * 5
 export default class SystemScene implements GameScene{
 	public readonly scene: THREE.Scene
 	public readonly camera: Camera
 	public readonly name: string = 'SystemScene'
 	private readonly gameState: GameState
+	private planetFocus: Planet | null = null
+	private lastCameraPosition: Vector3 | null = null
+	private lastCameraRotation: Euler | null = null
 	constructor(gameState: GameState) {
 		this.gameState = gameState
 		this.scene = new THREE.Scene();
@@ -53,7 +55,15 @@ export default class SystemScene implements GameScene{
 		this.gameState.planets.forEach(planet => this.scene.add(planet.mesh.mesh))
 	}
 
-	public onClick(state: GameState, callback: (planet: Planet) => void) {
+	public onClick(state: GameState) {
+		if (this.planetFocus && this.lastCameraPosition && this.lastCameraRotation) {
+			this.planetFocus = null
+			this.camera.position.set(this.lastCameraPosition.x, this.lastCameraPosition.y, this.lastCameraPosition.z)
+			this.lastCameraPosition = null
+			this.camera.rotation.set(this.lastCameraRotation.x, this.lastCameraRotation.y, this.lastCameraRotation.z)
+			this.lastCameraRotation = null
+			return
+		}
 		const mouseRaycaster = new THREE.Raycaster();
 		mouseRaycaster.setFromCamera(state.mousePos, this.camera)
 		const intersects = mouseRaycaster.intersectObjects(this.gameState.planets.map(planet => planet.mesh.hitBox))
@@ -62,7 +72,9 @@ export default class SystemScene implements GameScene{
 			const uuid = intersection.object.uuid
 			const planet = this.gameState.planets.find(planet => planet.mesh.hitBox.uuid === uuid)
 			if (planet) {
-				callback(planet)
+				this.lastCameraPosition = this.camera.position.clone()
+				this.lastCameraRotation = this.camera.rotation.clone()
+				this.planetFocus = planet
 			}
 		}
 	}
@@ -74,6 +86,12 @@ export default class SystemScene implements GameScene{
 	}
 
 	public update(state: GameState) {
+		if (this.planetFocus) {
+			this.camera.position.set(this.planetFocus.mesh.mesh.position.x, this.planetFocus.mesh.mesh.position.y, this.planetFocus.mesh.mesh.position.z);
+			this.camera.position.add(new Vector3(0, 0, cameraDistance(this.planetFocus.diameter)))
+			this.camera.lookAt(this.planetFocus.mesh.mesh.position)	
+			return	
+		}
 		const motion = new THREE.Vector3(0, 0, 0);
 		if (state.keysDown.indexOf('w') > -1) {
 			motion.z -= CAMERA_SPEED;
