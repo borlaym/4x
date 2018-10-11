@@ -6,35 +6,27 @@ import PlanetScene from 'PlanetScene';
 import UI from 'components/UI';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
-import PlanetController from 'controllers/PlanetController';
 import Planet from './models/Planet';
 import Company, { CompanyColor } from 'models/Company';
 import EventBus from 'EventBus';
 import Ship from 'models/Ship';
-import ShipMesh from 'ShipMesh';
+import createPlanets from 'createPlanets';
 
 const SPEED1 = 0.5
 const SPEED2 = 1
 const SPEED3 = 3
-
+let lastUpdate = Date.now()
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const planetController = new PlanetController()
-
-let lastUpdate = Date.now()
-
-
-
-const systemScene = new SystemScene(planetController.planets)
-const ship = new Ship(planetController.planets[2])
-const shipMesh = new ShipMesh(ship)
-ship.goToPlanet(planetController.planets[1])
-
-systemScene.scene.add(shipMesh.mesh)
+const planets = createPlanets()
 const company = new Company('Player', CompanyColor.Red)
+
+const ship = new Ship(planets[2])
+ship.goToPlanet(planets[1])
+
 const state: GameState = {
 	keysDown: [],
 	mousePos: {
@@ -43,10 +35,17 @@ const state: GameState = {
 	},
 	days: 0,
 	speed: SPEED1,
-	activeScene: systemScene,
-	company
+	activeScene: null,
+	company,
+	ships: [ship],
+	planets
 };
 
+console.log(state)
+
+const systemScene = new SystemScene(state)
+state.activeScene = systemScene
+systemScene.scene.add(ship.mesh.mesh)
 
 document.addEventListener('keydown', (event) => {
 	state.keysDown = uniq(state.keysDown.concat(event.key));
@@ -58,11 +57,11 @@ document.addEventListener('keyup', (event) => {
 
 window.addEventListener('wheel', (event) => {
 	event.preventDefault()
-	state.activeScene.onWheel(event)
+	state.activeScene && state.activeScene.onWheel(event)
 }, false);
 
 document.addEventListener('click', () => {
-	state.activeScene.onClick(state, (planet?: Planet) => {
+	state.activeScene && state.activeScene.onClick(state, (planet?: Planet) => {
 		if (planet) {
 			const planetScene = new PlanetScene(planet)
 			state.activeScene = planetScene
@@ -90,12 +89,12 @@ function update() {
 	state.days += dDays
 
 	// Update models
-	planetController.planets.forEach(planet => planet.update(dDays))
-	planetController.planets.forEach(planet => planet.mesh.update())
-	state.activeScene.update(state)
+	state.planets.forEach(planet => planet.update(dDays))
+	state.planets.forEach(planet => planet.mesh.update())
+	state.activeScene && state.activeScene.update(state)
 	ship.update(dDays)
-	shipMesh.update()
-	renderer.render(state.activeScene.scene, state.activeScene.camera);
+	ship.mesh.update()
+	state.activeScene && renderer.render(state.activeScene.scene, state.activeScene.camera);
 	renderUI(state)
 	requestAnimationFrame(update);
 }

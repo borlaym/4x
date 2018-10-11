@@ -9,6 +9,9 @@ interface Props {
 
 function SceneView(props: Props) {
 	const { activeScene } = props.gameState
+	if (!activeScene) {
+		return null
+	}
 	switch (activeScene.name) {
 		case 'PlanetScene':
 			return <PlanetView gameState={props.gameState} />

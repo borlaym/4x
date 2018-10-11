@@ -1,6 +1,7 @@
 import Planet from "./Planet";
 import { Vector3 } from "three";
 import rotateAroundPoint from "rotateAroundPoint";
+import ShipMesh from "ShipMesh";
 
 const orbitVector = (diameter: number) => new Vector3(diameter * 2, 0, 0)
 const orbitingAxis = new Vector3(0, 1, 0)
@@ -11,14 +12,16 @@ export default class Ship {
 	public onRouteTo: Planet | null = null
 	public movingTo: Vector3 | null
 	public position: Vector3
+	public mesh: ShipMesh
 	private rotationAroundPlanet: number
 	
 	constructor(
-		orbitingAround: Planet
+		orbitingAround: Planet,
 	) {
 		this.orbitingAround = orbitingAround
 		this.position = orbitingAround.position
 		this.rotationAroundPlanet = 1
+		this.mesh = new ShipMesh(this)
 	}
 
 	public update(dDay: number) {

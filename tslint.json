@@ -17,6 +17,7 @@
 		"no-bitwise": false,
 		"no-shadowed-variable": false,
 		"interface-name": false,
-		"no-debugger": false
+		"no-debugger": false,
+		"no-unused-expression": false
 	}
 }

@@ -12,8 +12,9 @@ export default class SystemScene implements GameScene{
 	public readonly scene: THREE.Scene
 	public readonly camera: Camera
 	public readonly name: string = 'SystemScene'
-	private readonly planets: Planet[]
-	constructor(planets: Planet[]) {
+	private readonly gameState: GameState
+	constructor(gameState: GameState) {
+		this.gameState = gameState
 		this.scene = new THREE.Scene();
 
 		const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 100000);
@@ -28,7 +29,7 @@ export default class SystemScene implements GameScene{
 		this.scene.add(sun)
 
 		 // Orbit circles
-		 planets.forEach(planet => {
+		 gameState.planets.forEach(planet => {
 			const geometry = new THREE.CircleGeometry(
 				planet.distanceFromSun * DISTANCE_CONSTANT,
 				100
@@ -42,26 +43,24 @@ export default class SystemScene implements GameScene{
 		})
 
 
-		planets.forEach(planet => this.scene.add(planet.mesh.mesh))
+		gameState.planets.forEach(planet => this.scene.add(planet.mesh.mesh))
 
 		const starField = createStarBackground()
 		this.scene.add(starField);
-
-		this.planets = planets
 	}
 
 	public onShow() {
-		this.planets.forEach(planet => this.scene.add(planet.mesh.mesh))
+		this.gameState.planets.forEach(planet => this.scene.add(planet.mesh.mesh))
 	}
 
 	public onClick(state: GameState, callback: (planet: Planet) => void) {
 		const mouseRaycaster = new THREE.Raycaster();
 		mouseRaycaster.setFromCamera(state.mousePos, this.camera)
-		const intersects = mouseRaycaster.intersectObjects(this.planets.map(planet => planet.mesh.hitBox))
+		const intersects = mouseRaycaster.intersectObjects(this.gameState.planets.map(planet => planet.mesh.hitBox))
 		if (intersects.length === 1) {
 			const intersection = intersects[0]
 			const uuid = intersection.object.uuid
-			const planet = this.planets.find(planet => planet.mesh.hitBox.uuid === uuid)
+			const planet = this.gameState.planets.find(planet => planet.mesh.hitBox.uuid === uuid)
 			if (planet) {
 				callback(planet)
 			}
@@ -92,17 +91,25 @@ export default class SystemScene implements GameScene{
 		this.camera.position.add(motion)
 
 		// Check for hover
-		this.planets.forEach(planet => { planet.mesh.isHighlighted = false })
+		this.gameState.planets.forEach(planet => { planet.mesh.isHighlighted = false })
+		this.gameState.ships.forEach(ship => { ship.mesh.isHighlighted = false })
 		const mouseRaycaster = new THREE.Raycaster();
 		mouseRaycaster.setFromCamera(state.mousePos, this.camera)
-		const intersects = mouseRaycaster.intersectObjects(this.planets.map(planet => planet.mesh.hitBox))
+		const hitBoxes = this.gameState.planets.map(planet => planet.mesh.hitBox)
+			.concat(this.gameState.ships.map(ship => ship.mesh.hitBox))
+		const intersects = mouseRaycaster.intersectObjects(hitBoxes)
 
 		if (intersects.length === 1) {
 			const intersection = intersects[0]
 			const uuid = intersection.object.uuid
-			const planet = this.planets.find(planet => planet.mesh.hitBox.uuid === uuid)
+			const planet = this.gameState.planets.find(planet => planet.mesh.hitBox.uuid === uuid)
 			if (planet) {
 				planet.mesh.isHighlighted = true
+			} else {
+				const ship = this.gameState.ships.find(ship => ship.mesh.hitBox.uuid === uuid)
+				if (ship) {
+					ship.mesh.isHighlighted = true
+				}
 			}
 		}
 	}
