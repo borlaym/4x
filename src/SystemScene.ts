@@ -99,7 +99,7 @@ export default class SystemScene implements GameScene{
 			.concat(this.gameState.ships.map(ship => ship.mesh.hitBox))
 		const intersects = mouseRaycaster.intersectObjects(hitBoxes)
 
-		if (intersects.length === 1) {
+		if (intersects.length > 0) {
 			const intersection = intersects[0]
 			const uuid = intersection.object.uuid
 			const planet = this.gameState.planets.find(planet => planet.mesh.hitBox.uuid === uuid)
